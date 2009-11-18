@@ -7,7 +7,6 @@ require File.dirname(__FILE__) + "/a_b_plugin/adapters/sinatra" if defined?(Sina
 
 module ABPlugin
   
-  mattr_accessor :api
   mattr_accessor :session_id
   mattr_accessor :tests
   mattr_accessor :token
@@ -24,22 +23,23 @@ module ABPlugin
       @@user_token = boot['user_token']
     end
   
-    def select_variant?(selections, variant)
+    def select_variant(selections, variant)
+      selections ||= {}
       test = test_from_variant(variant)
       return false unless test
-      if !selections || !selections[test['name']]
+      if !selections[test['name']]
         variants = test['variants'].sort do |a, b|
           a['visitors'] <=> b['visitors']
         end
         variants.first['visitors'] += 1
         selections[test['name']] = variants.first['name']
       end
-      selections[test['name']] == variant
+      [ selections, selections[test['name']] == variant ]
     end
   
     def test_from_variant(variant)
-      return nil unless ABPlugin.tests
-      tests = ABPlugin.tests.select do |t|
+      return nil unless @@tests
+      tests = @@tests.select do |t|
         t['variants'].collect { |v| v['name'] }.include?(variant)
       end
       tests.first
