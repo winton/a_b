@@ -1,36 +1,24 @@
-GemTemplate
-===========
+a\_b\_plugin
+============
 
-A gem template for new projects.
+Talk to <code>a_b</code> from your Rails or Sinatra app.
 
-Requirements
-------------
-
-<pre>
-sudo gem install stencil --source http://gemcutter.org
-</pre>
-
-Setup the template
-------------------
-
-You only have to do this once.
+Install
+-------
 
 <pre>
-git clone git@github.com:winton/gem_template.git
-cd gem_template
-stencil
+sudo gem install a_b_plugin --source http://gemcutter.org
 </pre>
 
-Setup a new project
--------------------
+Setup
+-----
 
-Do this for every new project.
+You will need to make a call to <code>ABPlugin.config</code> when your app boots:
 
 <pre>
-mkdir my_project
-git init
-stencil gem_template
-rake rename
+ABPlugin.config 'kTJkI8e56OisQrexuChW', 'http://ab.mydomain.com'
 </pre>
 
-The last command does a find-replace (gem\_template -> my\_project) on files and filenames.
+The first parameter is the persistence token from the user you created in <code>a_b</code>.
+
+The second parameter is the URL to your <code>a_b</code> server.

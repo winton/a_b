@@ -1,13 +1,13 @@
-GEM_NAME = 'gem_template'
+GEM_NAME = 'a_b_plugin'
 GEM_FILES = FileList['**/*'] - FileList['coverage', 'coverage/**/*', 'pkg', 'pkg/**/*']
 GEM_SPEC = Gem::Specification.new do |s|
   # == CONFIGURE ==
   s.author = "Winton Welsh"
   s.email = "mail@wintoni.us"
   s.homepage = "http://github.com/winton/#{GEM_NAME}"
-  s.summary = ""
+  s.summary = "Talk to a_b from your Rails or Sinatra app"
   # == CONFIGURE ==
-  s.executables << GEM_NAME
+  s.add_dependency('httparty', '=0.4.5')
   s.extra_rdoc_files = [ "README.markdown" ]
   s.files = GEM_FILES.to_a
   s.has_rdoc = false
