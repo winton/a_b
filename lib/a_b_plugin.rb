@@ -17,9 +17,7 @@ module ABPlugin
   class <<self
     
     def config(token, url)
-      API.base_uri @@url
-      @@api = API.new token
-      boot = @@api.boot
+      boot = API.boot token, url
       @@tests = boot['tests']
       @@token = token
       @@url = url

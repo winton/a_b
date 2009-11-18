@@ -4,7 +4,7 @@ module ABPlugin
     
       def self.included(klass)
         klass.send :before do
-          ABPlugin.session_id = env['rack.session.options']['_session_id']
+          ABPlugin.session_id = env["rack.request.cookie_hash"]["rack.session"][0..19]
         end
       end
     end

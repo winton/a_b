@@ -12,12 +12,12 @@ module ABPlugin
       private
     
       def a_b_plugin_before_filter
-        ABPlugin.session_id = session.session_id
+        ABPlugin.session_id = self.request.env["rack.request.cookie_hash"]["rack.session"][0..19]
       end
     end
   end
 end
 
-ActionController::Base.send(:include, ABRails::Adapters::Rails)
-ActionController::Base.send(:include, ABRails::Helper)
-ActionController::Base.helper(ABRails::Helper)
+ActionController::Base.send(:include, ABPlugin::Adapters::Rails)
+ActionController::Base.send(:include, ABPlugin::Helper)
+ActionController::Base.helper(ABPlugin::Helper)
