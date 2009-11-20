@@ -17,6 +17,8 @@ module ABPlugin
           ABPlugin.session_id = session_id
         end
       end
+      
+      # TODO: After filter to re-request boot.json every hour
     end
   end
 end
