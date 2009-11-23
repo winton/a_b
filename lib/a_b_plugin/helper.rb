@@ -18,8 +18,8 @@ module ABPlugin
         :url => ABPlugin.url,
         :visits => visits
       }
-      visits = visits.values.collect { |v| "variants[]=#{v}" }.join '&'
-      url = ABPlugin.url + "/visit.js?session_id=#{ABPlugin.session_id}&token=#{token}&#{visits}"
+      visits = visits.values.collect { |v| "visits[]=#{v}" }.join '&'
+      url = ABPlugin.url + "/increment.js?session_id=#{ABPlugin.session_id}&token=#{token}&#{visits}"
       [ "<script src=\"#{url}\" type=\"text/javascript\"></script>",
         "<script type=\"text/javascript\">A_B.setup(#{options.to_json});</script>"
       ].join

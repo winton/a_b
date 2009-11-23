@@ -7,6 +7,7 @@ require File.dirname(__FILE__) + "/a_b_plugin/adapters/sinatra" if defined?(Sina
 
 module ABPlugin
   
+  mattr_accessor :cached_at
   mattr_accessor :session_id
   mattr_accessor :tests
   mattr_accessor :token
@@ -15,23 +16,29 @@ module ABPlugin
   
   class <<self
     
-    def config(token, url)
+    def config(token=@@token, url=@@url)
       boot = API.boot token, url
+      @@cached_at = Time.now
       @@tests = boot['tests']
       @@token = token
       @@url = url
       @@user_token = boot['user_token']
     end
+    alias :reload :config
+    
+    def reload?
+      @@cached_at && (Time.now - @@cached_at).to_i >= 60 * 60
+    end
   
     def select_variant(selections, variant)
       selections ||= {}
       test = test_from_variant(variant)
-      return false unless test
+      return [ selections, false ] unless test
       if !selections[test['name']]
         variants = test['variants'].sort do |a, b|
-          a['visitors'] <=> b['visitors']
+          a['visits'] <=> b['visits']
         end
-        variants.first['visitors'] += 1
+        variants.first['visits'] += 1
         selections[test['name']] = variants.first['name']
       end
       [ selections, selections[test['name']] == variant ]
