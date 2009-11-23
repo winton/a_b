@@ -16,15 +16,14 @@ window.A_B = new function() {
 	
 	function convert(test_or_variant) {
 		var pair = test_variant_pair(test_or_variant);
-		console.log(pair);
 		if (!pair || !session_id || !token || !url)
 			return;
 		var params = [
 			'session_id=' + session_id,
 			'token=' + token,
-			'variants[]=' + pair[1].name
+			'conversions[]=' + pair[1].name
 		];
-		$.getJSON(url + '/convert.js?' + params.join('&'));
+		$.getJSON(url + '/increment.js?' + params.join('&'));
 	}
 	
 	// Returns a [ test, variant ] pair given a test or variant

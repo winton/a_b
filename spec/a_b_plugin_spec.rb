@@ -6,30 +6,7 @@ module ABPlugin
   describe ABPlugin do
     
     before(:each) do
-      @token = 'a'*20
-      @url = 'http://test.com'
-      @user_token = 'b'*20
-      @tests = [{
-        "name" => "Test",
-        "variants" => [
-          {
-            "name" => "v1",
-            "visits" => 0
-          },
-          {
-            "name" => "v2",
-            "visits" => 0
-          },
-          {
-            "name" => "v3",
-            "visits" => 0
-          }
-        ]
-      }]
-      API.stub!(:boot).and_return(
-        "tests" => @tests,
-        "user_token" => @user_token
-      )
+      stub_api_boot
       Time.stub!(:now).and_return($time_now)
     end
     
