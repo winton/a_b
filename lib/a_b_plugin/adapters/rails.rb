@@ -18,12 +18,8 @@ module ABPlugin
       
       def a_b_plugin_before_filter
         session_id = self.request.env["rack.request.cookie_hash"]["rack.session"][0..19] rescue nil
-        if session_id
-          ABPlugin.session_id = session_id
-        end
+        ABPlugin.session_id = session_id
       end
-      
-      # TODO: After filter to re-request boot.json every hour
     end
   end
 end

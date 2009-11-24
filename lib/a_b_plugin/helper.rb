@@ -4,11 +4,13 @@ module ABPlugin
     private
     
     def a_b(variant, &block)
+      return unless ABPlugin.active?
       @a_b_selections, selected = ABPlugin.select_variant(@a_b_selections, variant)
       block.call if block_given? && selected
     end
     
     def a_b_script_tag
+      return unless ABPlugin.active?
       token = Digest::SHA256.hexdigest(ABPlugin.session_id + ABPlugin.user_token)
       visits = @a_b_selections || {}
       options = {

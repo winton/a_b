@@ -8,7 +8,8 @@ module ABPlugin
         end
         
         klass.send :before do
-          ABPlugin.session_id = env["rack.request.cookie_hash"]["rack.session"][0..19]
+          session_id = env["rack.request.cookie_hash"]["rack.session"][0..19] rescue nil
+          ABPlugin.session_id = session_id
         end
       end
     end

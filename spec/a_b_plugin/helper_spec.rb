@@ -12,6 +12,12 @@ module ABPlugin
       
       describe :a_b do
         
+        before(:each) do
+          stub_api_boot
+          ABPlugin.config @token, @url
+          ABPlugin.session_id = @session_id
+        end
+        
         it "should call a block if variant has been selected" do
           called = false
           ABPlugin.should_receive(:select_variant).with(nil, 'v1').and_return([ {}, true ])

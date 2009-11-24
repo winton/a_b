@@ -16,21 +16,34 @@ module ABPlugin
   
   class <<self
     
-    def config(token=@@token, url=@@url)
-      boot = API.boot token, url
-      @@cached_at = Time.now
-      @@tests = boot['tests']
+    def active?
+      @@cached_at && @@session_id && @@tests && @@token && @@url && @@user_token
+    end
+    
+    def config(token, url)
       @@token = token
       @@url = url
-      @@user_token = boot['user_token']
     end
-    alias :reload :config
+    
+    def reload
+      begin
+        boot = ABPlugin::API.boot @@token, @@url
+        @@cached_at = Time.now
+        @@tests = boot['tests']
+        @@user_token = boot['user_token']
+      rescue Exception => e
+        @@cached_at = Time.now - 50 * 60 # Try again in 10 minutes
+        @@tests = nil
+        @@user_token = nil
+      end
+    end
     
     def reload?
-      @@cached_at && (Time.now - @@cached_at).to_i >= 60 * 60
+      @@cached_at.nil? || (Time.now - @@cached_at).to_i >= 60 * 60
     end
   
     def select_variant(selections, variant)
+      return [ selections, false ] unless active?
       selections ||= {}
       test = test_from_variant(variant)
       return [ selections, false ] unless test

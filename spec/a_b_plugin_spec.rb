@@ -15,6 +15,7 @@ module ABPlugin
       it "should retrieve API data" do
         API.should_receive(:boot).with(@token, @url)
         ABPlugin.config @token, @url
+        ABPlugin.session_id = @session_id
       end
     
       it "should update class variables" do
