@@ -20,11 +20,6 @@ module ABPlugin
       @@cached_at && @@session_id && @@tests && @@token && @@url && @@user_token
     end
     
-    def config(token, url)
-      @@token = token
-      @@url = url
-    end
-    
     def reload
       begin
         boot = ABPlugin::API.boot @@token, @@url
