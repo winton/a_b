@@ -1,0 +1,4 @@
+# Logfile created on 2009-11-28 23:22:19 -0800
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-11-28 23:22:20) [GET]
+Completed in 3ms (View: 1, DB: 0) | 200 OK [http://example.org/]

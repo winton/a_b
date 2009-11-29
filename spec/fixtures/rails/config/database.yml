@@ -1,0 +1,7 @@
+development: &dev
+  adapter: sqlite3
+  database: ":memory:"
+test:
+  <<: *dev
+production:
+  <<: *dev

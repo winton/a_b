@@ -4,6 +4,11 @@ SPEC = File.dirname(__FILE__)
 require 'pp'
 require 'cgi'
 require 'json'
+
+require 'rubygems'
+require 'rack/test'
+
+require File.expand_path("#{SPEC}/fixtures/rails/config/environment")
 require File.expand_path("#{SPEC}/../rails/init")
 
 Spec::Runner.configure do |config|
