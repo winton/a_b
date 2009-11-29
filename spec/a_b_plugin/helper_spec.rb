@@ -14,14 +14,16 @@ module ABPlugin
         
         before(:each) do
           stub_api_boot
-          ABPlugin.config @token, @url
+          ABPlugin.token = @token
+          ABPlugin.url = @url
           ABPlugin.session_id = @session_id
+          ABPlugin.reload
         end
         
         it "should call a block if variant has been selected" do
           called = false
           ABPlugin.should_receive(:select_variant).with(nil, 'v1').and_return([ {}, true ])
-          HelperInstance.new.send(:a_b, 'v1') do
+          ABPlugin::HelperInstance.new.send(:a_b, 'v1') do
             called = true
           end
           called.should == true
@@ -30,7 +32,7 @@ module ABPlugin
         it "should not call a block if variant has not been selected" do
           called = false
           ABPlugin.should_receive(:select_variant).with(nil, 'v1').and_return([ {}, false ])
-          HelperInstance.new.send(:a_b, 'v1') do
+          ABPlugin::HelperInstance.new.send(:a_b, 'v1') do
             called = true
           end
           called.should == false
@@ -41,10 +43,11 @@ module ABPlugin
         
         before(:each) do
           stub_api_boot
-          ABPlugin.config @token, @url
+          ABPlugin.token = @token
+          ABPlugin.url = @url
           ABPlugin.session_id = @session_id
           ABPlugin.stub!(:select_variant).and_return([ { 'Test' => 'v1' }, true ])
-          instance = HelperInstance.new
+          instance = ABPlugin::HelperInstance.new
           instance.send(:a_b, 'v1')
           js = instance.send(:a_b_script_tag)
           @increment_params = params(/src="([^"]+)"/.match(js)[1])

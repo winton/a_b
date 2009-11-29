@@ -14,12 +14,15 @@ module ABPlugin
       
       it "should retrieve API data" do
         API.should_receive(:boot).with(@token, @url)
-        ABPlugin.config @token, @url
+        ABPlugin.token = @token
+        ABPlugin.url = @url
         ABPlugin.session_id = @session_id
+        ABPlugin.reload
       end
     
       it "should update class variables" do
-        ABPlugin.config @token, @url
+        ABPlugin.token = @token
+        ABPlugin.url = @url
         ABPlugin.cached_at.should == $time_now
         ABPlugin.tests.should == @tests
         ABPlugin.token.should == @token
@@ -31,7 +34,8 @@ module ABPlugin
     describe :reload? do
       
       it "should return true if an hour has passed since last load" do
-        ABPlugin.config @token, @url
+        ABPlugin.token = @token
+        ABPlugin.url = @url
         ABPlugin.reload?.should == false
         Time.stub!(:now).and_return($time_now + 60 * 60 - 1)
         ABPlugin.reload?.should == false
@@ -45,7 +49,8 @@ module ABPlugin
       before(:each) do
         @selections = { 'Test' => 'v1' }
         @variant = 'v1'
-        ABPlugin.config @token, @url
+        ABPlugin.token = @token
+        ABPlugin.url = @url
       end
       
       it "should receive a hash of previous selections and the variant to attempt to select" do
@@ -82,7 +87,9 @@ module ABPlugin
     describe :test_from_variant do
       
       before(:each) do
-        ABPlugin.config @token, @url
+        ABPlugin.token = @token
+        ABPlugin.url = @url
+        ABPlugin.reload
       end
       
       it 'should return a test from a variant name' do
