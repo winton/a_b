@@ -11,20 +11,14 @@ module ABPlugin
     
     def a_b_script_tag
       return unless ABPlugin.active?
-      token = Digest::SHA256.hexdigest(ABPlugin.session_id + ABPlugin.user_token)
-      visits = @a_b_selections || {}
       options = {
+        :selections => @a_b_selections || {},
         :session_id => ABPlugin.session_id,
         :tests => ABPlugin.tests,
-        :token => token,
-        :url => ABPlugin.url,
-        :visits => visits
+        :token => Digest::SHA256.hexdigest(ABPlugin.session_id + ABPlugin.user_token),
+        :url => ABPlugin.url
       }
-      visits = visits.values.collect { |v| "visits[]=#{v}" }.join '&'
-      url = ABPlugin.url + "/increment.js?session_id=#{ABPlugin.session_id}&token=#{token}&#{visits}"
-      [ "<script src=\"#{url}\" type=\"text/javascript\"></script>",
-        "<script type=\"text/javascript\">A_B.setup(#{options.to_json});</script>"
-      ].join
+      "<script type=\"text/javascript\">A_B.setup(#{options.to_json});</script>"
     end
   end
 end
