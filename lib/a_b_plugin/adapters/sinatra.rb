@@ -3,7 +3,8 @@ module ABPlugin
     module Sinatra
     
       def self.included(klass)
-        klass.send :after do
+        # Use after filter if Sinatra 1.0
+        klass.send klass.respond_to?(:after) ? :after : :before do
           ABPlugin.reload if ABPlugin.reload?
         end
         

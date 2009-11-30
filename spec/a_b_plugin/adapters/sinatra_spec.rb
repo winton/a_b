@@ -1,11 +1,11 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../../spec_helper")
 
-describe ABPlugin::Adapters::Rails do
+describe ABPlugin::Adapters::Sinatra do
 
   include Rack::Test::Methods
 
   def app
-    ActionController::Dispatcher.new
+    SinatraApp.new
   end
   
   [ :controller, :helper ].each do |type|

@@ -42,5 +42,6 @@ ActionController::Routing::Routes.draw do |map|
   #map.connect ':controller/:action/:id'
   #map.connect ':controller/:action/:id.:format'
   
-  map.connect '/', :controller => 'application', :action => 'index'
+  map.connect '/controller/respond_to/:method', :controller => 'application', :action => 'controller_respond_to'
+  map.connect '/helper/respond_to/:method', :controller => 'application', :action => 'helper_respond_to'
 end

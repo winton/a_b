@@ -8,7 +8,11 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
   
-  def index
-    render :nothing => true
+  def controller_respond_to
+    render :text => private_methods.include?(params[:method].intern) ? '1' : '0'
+  end
+  
+  def helper_respond_to
+    render :inline => "<%= private_methods.include?(params[:method].intern) ? 1 : 0 %>"
   end
 end
