@@ -3,7 +3,7 @@ a\_b\_plugin
 
 Talk to <code>a\_b</code> from your Rails or Sinatra app.
 
-Don't know what <code>a\_b</code> is? Visit http://github.com/winton/a\_b
+Don't know what <code>a\_b</code> is? Visit [][http://github.com/winton/a\_b]
 
 Install
 -------
@@ -19,7 +19,7 @@ Setup
 
 Copy this file into the directory where you keep your javascript assets:
 
-http://github.com/winton/a\_b/raw/master/public/js/a\_b.js
+[][http://github.com/winton/a\_b/raw/master/public/js/a\_b.js]
 
 ### Configuration
 
@@ -47,7 +47,7 @@ In your HTML layout, you will need a call to <code>a\_b\_script_tag</code> with 
 Usage
 -----
 
-Create a test and some variants from the <code>a_b</code> admin.
+Before using the examples below, create a test and some variants from the <code>a_b</code> admin.
 
 ### Ruby
 
