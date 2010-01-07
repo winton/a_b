@@ -3,9 +3,9 @@ SPEC = File.dirname(__FILE__)
 
 require 'pp'
 require 'cgi'
-require 'json'
 
 require 'rubygems'
+require 'json'
 require 'rack/test'
 require 'sinatra/base'
 

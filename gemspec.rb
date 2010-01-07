@@ -7,7 +7,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.homepage = "http://github.com/winton/#{GEM_NAME}"
   s.summary = "Talk to a_b from your Rails or Sinatra app"
   # == CONFIGURE ==
-  s.add_dependency('httparty', '=0.4.5')
+  s.add_dependency('httparty', '=0.5.0')
   s.extra_rdoc_files = [ "README.markdown" ]
   s.files = GEM_FILES.to_a
   s.has_rdoc = false

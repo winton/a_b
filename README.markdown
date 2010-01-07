@@ -1,7 +1,9 @@
 a\_b\_plugin
 ============
 
-Talk to <code>a_b</code> from your Rails or Sinatra app.
+Talk to <code>a\_b</code> from your Rails or Sinatra app.
+
+Don't know what <code>a\_b</code> is? Visit http://github.com/winton/a\_b
 
 Install
 -------
@@ -13,13 +15,65 @@ sudo gem install a_b_plugin --source http://gemcutter.org
 Setup
 -----
 
-You will need to do this when your app boots:
+### Assets
+
+Copy this file into the directory where you keep your javascript assets:
+
+http://github.com/winton/a\_b/raw/master/public/js/a\_b.js
+
+### Configuration
+
+Execute the following code when you app boots.
 
 <pre>
-ABPlugin.token = 'kTJkI8e56OisQrexuChW'
-ABPlugin.url = 'http://ab.mydomain.com'
+ABPlugin.token = 'kTJkI8e56OisQrexuChW' // Persistence token from one of your a_b users
+ABPlugin.url = 'http://ab.mydomain.com' // The URL to your a_b server
 </pre>
 
-Token is the persistence token from the user you created in <code>a_b</code>'s <code>script/console</code>.
+For Rails apps, insert it at the bottom of your <code>environment.rb</code> file.
 
-URL is the address of your <code>a_b</code> server.
+### Layout
+
+In your HTML layout, you will need a call to <code>a\_b\_script_tag</code> with the path to the javascript file you created earlier.
+
+<pre>
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;%= a_b_script_tag '/javascripts/a_b.js' %&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+Usage
+-----
+
+Create a test and some variants from the <code>a_b</code> admin.
+
+### Ruby
+
+<pre>
+a_b('my variant') do
+  # Execute code if this variant is selected
+end
+a_b('my variant') # Record a conversion if this variant is selected
+a_b('my test')    # Record a conversion for the selected variant of this test
+</pre>
+
+You can use the <code>a\_b</code> method in the controller or the view.
+
+### Javascript
+
+<pre>
+a_b('my variant', function() {
+  # Execute code if this variant is selected
+});
+a_b('my variant'); # Record a conversion if this variant is selected
+a_b('my test');    # Record a conversion for the selected variant of this test
+</pre>
+
+That's it!
+----------
+
+Visits and conversions are sent directly from the end user to the <code>a\_b</code> server via JSON-P.
+
+Because of this, your application's performance is never affected by <code>a\_b</code> transactions.
