@@ -3,7 +3,7 @@ a\_b\_plugin
 
 Talk to <code>a\_b</code> from your Rails or Sinatra app.
 
-[Don't know what <code>a_b</code> is?][http://github.com/winton/a\_b]
+[Don't know what <code>a_b</code> is?](http://github.com/winton/a_b)
 
 Install
 -------
@@ -17,7 +17,7 @@ Setup
 
 ### Assets
 
-Copy [this file][http://github.com/winton/a\_b/raw/master/public/js/a\_b.js] into the directory where you keep your javascript assets.
+Copy [this javascript file](http://github.com/winton/a_b/raw/master/public/js/a_b.js) into the directory where you keep your javascript assets.
 
 ### Configuration
 
