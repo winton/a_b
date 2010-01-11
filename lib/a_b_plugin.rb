@@ -20,6 +20,24 @@ module ABPlugin
       @@cached_at && @@session_id && @@tests && @@token && @@url && @@user_token
     end
     
+    def convert(test_or_variant, conversions, selections, visits)
+      test, variant = selected_variant(test_or_variant, selections)
+      return unless test && variant
+      conversions ||= {}
+      conversions[test['name']] = variant
+      visits ||= {}
+      visits[test['name']] = variant
+      [ conversions, selections, visits ]
+    end
+    
+    def find_test(test_or_variant)
+      return unless @@tests
+      tests = @@tests.select do |t|
+        t['name'] == test_or_variant || variant_names(t).include?(test_or_variant)
+      end
+      tests.first
+    end
+    
     def reload
       begin
         boot = ABPlugin::API.boot @@token, @@url
@@ -36,28 +54,53 @@ module ABPlugin
     def reload?
       @@cached_at.nil? || (Time.now - @@cached_at).to_i >= 60 * 60
     end
-  
-    def select_variant(selections, variant)
-      return [ selections, false ] unless active?
+    
+    def select(test_or_variant, selections)
+      test = find_test(test_or_variant)
+      return [ selections ] unless active? && test
+      
       selections ||= {}
-      test = test_from_variant(variant)
-      return [ selections, false ] unless test
-      if !selections[test['name']]
+      unless selections[test['name']]
         variants = test['variants'].sort do |a, b|
           a['visits'] <=> b['visits']
         end
         variants.first['visits'] += 1
         selections[test['name']] = variants.first['name']
       end
-      [ selections, selections[test['name']] == variant ]
+      
+      [ selections,
+        test['name'],
+        selections[test['name']]
+      ]
     end
-  
-    def test_from_variant(variant)
-      return nil unless @@tests
-      tests = @@tests.select do |t|
-        t['variants'].collect { |v| v['name'] }.include?(variant)
+    
+    def selected_variant(test_or_variant, selections)
+      test = find_test(test_or_variant)
+      return unless test
+      [ test, selections[test['name']] ]
+    end
+    
+    def test_names
+      @@tests.collect { |t| t['name'] }
+    end
+    
+    def variant_names(test=nil)
+      variants = lambda do |t|
+        t['variants'].collect { |v| v['name'] }
       end
-      tests.first
+      if test
+        variants.call(test)
+      else
+        @@tests.collect { |t| variants.call(t) }.flatten
+      end
+    end
+    
+    def visit(test_or_variant, conversions, selections, visits)
+      test, variant = selected_variant(test_or_variant, selections)
+      return unless test && variant
+      visits ||= {}
+      visits[test['name']] = variant
+      [ conversions, selections, visits ]
     end
   end
 end

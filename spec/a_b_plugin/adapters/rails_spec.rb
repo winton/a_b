@@ -15,14 +15,24 @@ describe ABPlugin::Adapters::Rails do
         get "/#{type}/respond_to/a_b"
         last_response.body.should == '1'
       end
+      
+      it "should respond to a_b_convert" do
+        get "/#{type}/respond_to/a_b_convert"
+        last_response.body.should == '1'
+      end
 
       it "should respond to a_b_script_tag" do
         get "/#{type}/respond_to/a_b_script_tag"
         last_response.body.should == '1'
       end
+      
+      it "should respond to a_b_visit" do
+        get "/#{type}/respond_to/a_b_visit"
+        last_response.body.should == '1'
+      end
 
-      it "should not respond to sanity_check_failure" do
-        get "/#{type}/respond_to/sanity_check_failure"
+      it "should not respond to this_should_fail" do
+        get "/#{type}/respond_to/this_should_fail"
         last_response.body.should == '0'
       end
       

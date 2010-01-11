@@ -3,7 +3,7 @@ a\_b\_plugin
 
 Talk to <code>a\_b</code> from your Rails or Sinatra app.
 
-[Don't know what <code>a_b</code> is?](http://github.com/winton/a_b)
+[What the hell is <code>a_b</code>?](http://github.com/winton/a_b)
 
 Install
 -------
@@ -28,7 +28,7 @@ ABPlugin.token = 'kTJkI8e56OisQrexuChW' // Persistence token from one of your a_
 ABPlugin.url = 'http://ab.mydomain.com' // The URL to your a_b server
 </pre>
 
-For Rails apps, insert it at the bottom of your <code>environment.rb</code> file.
+For Rails apps, you would place this at the bottom of your <code>environment.rb</code> file.
 
 ### Layout
 
@@ -50,11 +50,11 @@ Before using the examples below, create a test and some variants from the <code>
 ### Ruby
 
 <pre>
-a_b('my variant') do
-  # Execute code if this variant is selected
+a_b_visit('my variant') do
+  # Record a visit and execute code if this variant is selected
 end
-a_b('my variant') # Record a conversion if this variant is selected
-a_b('my test')    # Record a conversion for the selected variant of this test
+a_b_convert('my variant') # Record a conversion if this variant is selected
+a_b_convert('my test')    # Record a conversion for the selected variant of this test
 </pre>
 
 You can use the <code>a\_b</code> method in the controller or the view.
@@ -62,11 +62,11 @@ You can use the <code>a\_b</code> method in the controller or the view.
 ### Javascript
 
 <pre>
-a_b('my variant', function() {
-  # Execute code if this variant is selected
+a_b_visit('my variant', function() {
+  # Record a visit and execute code if this variant is selected
 });
-a_b('my variant'); # Record a conversion if this variant is selected
-a_b('my test');    # Record a conversion for the selected variant of this test
+a_b_convert('my variant'); # Record a conversion if this variant is selected
+a_b_convert('my test');    # Record a conversion for the selected variant of this test
 </pre>
 
 That's it!
