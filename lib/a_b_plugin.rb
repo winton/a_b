@@ -57,15 +57,17 @@ module ABPlugin
     
     def select(test_or_variant, selections)
       test = find_test(test_or_variant)
-      return [ selections ] unless active? && test
+      return [ selections ] unless test
       
       selections ||= {}
       unless selections[test['name']]
         variants = test['variants'].sort do |a, b|
           a['visits'] <=> b['visits']
         end
-        variants.first['visits'] += 1
-        selections[test['name']] = variants.first['name']
+        if variants.first
+          variants.first['visits'] += 1
+          selections[test['name']] = variants.first['name']
+        end
       end
       
       [ selections,
