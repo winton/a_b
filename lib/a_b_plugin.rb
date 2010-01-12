@@ -40,8 +40,8 @@ module ABPlugin
     
     def reload
       begin
-        boot = ABPlugin::API.boot @@token, @@url
         @@cached_at = Time.now
+        boot = ABPlugin::API.boot @@token, @@url
         @@tests = boot['tests']
         @@user_token = boot['user_token']
       rescue Exception => e
