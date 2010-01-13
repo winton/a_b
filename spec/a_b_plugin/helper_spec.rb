@@ -79,7 +79,6 @@ module ABPlugin
           ABPlugin.stub!(:active?).and_return(true)
           ABPlugin.session_id = @session_id
           ABPlugin.tests = @tests
-          ABPlugin.token = @token
           ABPlugin.user_token = @user_token
           ABPlugin.url = @url
           @instance = ABPlugin::HelperInstance.new

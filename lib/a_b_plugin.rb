@@ -13,14 +13,13 @@ module ABPlugin
   mattr_accessor :config
   mattr_accessor :session_id
   mattr_accessor :tests
-  mattr_accessor :token
   mattr_accessor :url
   mattr_accessor :user_token
   
   class <<self
     
     def active?
-      @@session_id && @@tests && @@token && @@url && @@user_token
+      @@session_id && @@tests && @@url && @@user_token
     end
     
     def convert(variant, conversions, selections, visits)
@@ -41,13 +40,18 @@ module ABPlugin
     
     def reload
       if @@config
-        path = File.dirname(@@config) + "/a_b_data.yml"
-        if File.exists?(path)
-          @@cached_at = Time.now
-          yaml = YAML::load(File.dirname(@@config) + "/a_b_data.yml")
-          @@tests = yaml['tests']
-          @@user_token = yaml['user_token']
-        end
+        data = File.dirname(@@config) + "/a_b_data.yml"
+      end
+      if @@config && File.exists?(@@config) && File.exists?(data)
+        config = YAML::load(File.open(@@config))
+        config = defined?(RACK_ENV) ? config[RACK_ENV] : config[RAILS_ENV]
+        data = YAML::load(File.open(data))
+        @@cached_at = Time.now
+        @@tests = data['tests']
+        @@user_token = data['user_token']
+        @@url = config['url']
+      else
+        @@cached_at = Time.now - 50 * 60 # Try again in 10 minutes
       end
     end
     
