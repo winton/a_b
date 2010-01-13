@@ -19,16 +19,9 @@ module ABPlugin
         @visits = {}
       end
       
-      it "should add an entry to the conversions and visits hash if selected (given a test)" do
-        ABPlugin.convert('Test', @conversions, @selections, @visits)
-        @conversions.should == { "Test" => "v1" }
-        @visits.should == { "Test" => "v1" }
-      end
-      
-      it "should add an entry to the conversions and visits hash if selected (given a variant)" do
+      it "should add an entry to the conversions hash if selected (given a variant)" do
         ABPlugin.convert('v1', @conversions, @selections, @visits)
         @conversions.should == { "Test" => "v1" }
-        @visits.should == { "Test" => "v1" }
       end
     end
     
@@ -112,12 +105,6 @@ module ABPlugin
         @conversions = {}
         @selections = { 'Test' => 'v1' }
         @visits = {}
-      end
-      
-      it "should add an entry to the visits hash if selected (given a test)" do
-        ABPlugin.visit('Test', @conversions, @selections, @visits)
-        @conversions.should == {}
-        @visits.should == { "Test" => "v1" }
       end
       
       it "should add an entry to the visits hash if selected (given a variant)" do
