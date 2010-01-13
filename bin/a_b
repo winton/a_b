@@ -1,10 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
-gem 'httparty', '=0.5.0'
-
-require 'httparty'
-require 'yaml'
 require "#{File.expand_path(File.dirname(__FILE__) + "/../lib/a_b_plugin")}"
 
 case File.extname(ARGV[0])

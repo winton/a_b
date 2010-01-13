@@ -25,29 +25,11 @@ module ABPlugin
       end
     end
     
-    describe :reload do
+    describe :reload? do
       
       before(:each) do
-        ABPlugin.token = @token
-        ABPlugin.url = @url
-        ABPlugin.session_id = @session_id
+        ABPlugin.cached_at = $time_now
       end
-      
-      it "should call API.boot" do
-        API.should_receive(:boot).with(@token, @url)
-        ABPlugin.reload
-      end
-      
-      it "should set class variables based on the response" do
-        Time.stub!(:now).and_return($time_now)
-        ABPlugin.reload
-        ABPlugin.cached_at.should == $time_now
-        ABPlugin.tests.should == @tests
-        ABPlugin.user_token = @user_token
-      end
-    end
-    
-    describe :reload? do
       
       it "should return true if it has been an hour since the last cache" do
         Time.stub!(:now).and_return($time_now + 60 * 60)
