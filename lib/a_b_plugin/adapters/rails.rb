@@ -12,12 +12,13 @@ module ABPlugin
       private
       
       def a_b_plugin_before_filter
-        session[:a_b_id] ||= ABPlugin.generate_token
-        ABPlugin.session_id = session[:a_b_id]
-        ABPlugin.session = session
-        if ABPlugin.session
-          @a_b_selections = ABPlugin.session[:a_b]
+        id = session[:a_b_id]
+        unless id 
+          session[:a_b_id] = ABPlugin.generate_token
         end
+        ABPlugin.session_id = id
+        ABPlugin.session = session
+        @a_b_selections = ABPlugin.session[:a_b]
         ABPlugin.reload if ABPlugin.reload?
       end
     end
