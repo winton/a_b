@@ -6,15 +6,15 @@ module ABPlugin
         if defined?(::ApplicationController)
           raise 'Please require a_b_plugin before all other plugins.'
         end
-        klass.prepend_before_filter :a_b_plugin_before_filter
+        klass.before_filter :a_b_plugin_before_filter
       end
     
       private
       
       def a_b_plugin_before_filter
         id = session[:a_b_id]
-        unless id 
-          session[:a_b_id] = ABPlugin.generate_token
+        unless id
+          id = session[:a_b_id] = ABPlugin.generate_token
         end
         ABPlugin.session_id = id
         ABPlugin.session = session
