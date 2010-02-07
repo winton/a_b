@@ -1,26 +1,7 @@
-$testing = true
-SPEC = File.dirname(__FILE__)
-
-require 'pp'
-require 'cgi'
-
-require 'rubygems'
-require 'json'
-require 'rack/test'
-require 'sinatra/base'
-
-require File.expand_path("#{SPEC}/fixtures/rails/config/environment")
-require File.expand_path("#{SPEC}/../rails/init")
-require File.expand_path("#{SPEC}/fixtures/sinatra")
+require File.expand_path("#{File.dirname(__FILE__)}/../require")
+Require.spec_helper!
 
 Spec::Runner.configure do |config|
-end
-
-# For use with rspec textmate bundle
-def debug(object)
-  puts "<pre>"
-  puts object.pretty_inspect.gsub('<', '&lt;').gsub('>', '&gt;')
-  puts "</pre>"
 end
 
 def params(url)

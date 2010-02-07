@@ -1,13 +1,6 @@
-require 'rubygems'
-gem 'httparty', '=0.5.0'
+require File.expand_path("#{File.dirname(__FILE__)}/../require")
+Require.lib!
 
-require 'httparty'
-require 'yaml'
-
-require File.dirname(__FILE__) + "/a_b_plugin/core_ext/array"
-require File.dirname(__FILE__) + "/a_b_plugin/core_ext/module"
-require File.dirname(__FILE__) + "/a_b_plugin/api"
-require File.dirname(__FILE__) + "/a_b_plugin/helper"
 require File.dirname(__FILE__) + "/a_b_plugin/adapters/rails" if defined?(Rails)
 require File.dirname(__FILE__) + "/a_b_plugin/adapters/sinatra" if defined?(Sinatra)
 
