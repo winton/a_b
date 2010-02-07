@@ -25,7 +25,8 @@ Execute the following code when you app boots.
 
 <pre>
 ABPlugin.token = 'kTJkI8e56OisQrexuChW' # Persistence token from one of your a_b users
-ABPlugin.url = 'http://ab.mydomain.com' # The URL to your a_b server</pre>
+ABPlugin.url = 'http://ab.mydomain.com' # The URL to your a_b server
+</pre>
 
 For Rails apps, you would place this at the bottom of your <code>environment.rb</code> file.
 

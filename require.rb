@@ -3,7 +3,8 @@ gem 'require'
 require 'require'
 
 Require do
-  gem :httparty, '=0.5.0' { require 'httparty' }
+  gem(:httparty, '=0.5.0') { require 'httparty' }
+  gem(:json, '=1.2.0') { require 'json' }
   gem(:'rack-test', '=0.5.3') { require 'rack/test' }
   gem :require, '=0.2.1'
   gem(:rake, '=0.8.7') { require 'rake' }
@@ -22,9 +23,10 @@ Require do
     version '0.1.0'
   end
   
-  bin { require 'lib/gem_template' }
+  bin { require 'lib/a_b_plugin' }
   
   lib {
+    gem :httparty
     require 'yaml'
     require "lib/a_b_plugin/core_ext/array"
     require "lib/a_b_plugin/core_ext/module"
@@ -32,7 +34,7 @@ Require do
     require "lib/a_b_plugin/helper"
   }
   
-  rails_init { require 'lib/gem_template' }
+  rails_init { require 'lib/a_b_plugin' }
   
   rakefile do
     gem(:rake) { require 'rake/gempackagetask' }
@@ -44,8 +46,8 @@ Require do
     require 'require/spec_helper'
     require 'pp'
     require 'cgi'
-    require 'json'
     
+    gem :json
     gem :'rack-test'
     gem :sinatra
 
