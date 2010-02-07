@@ -3,7 +3,7 @@ gem 'require'
 require 'require'
 
 Require do
-  gem(:httparty, '=0.5.0') { require 'httparty' }
+  gem(:httparty, '=0.5.2') { require 'httparty' }
   gem(:json, '=1.2.0') { require 'json' }
   gem(:'rack-test', '=0.5.3') { require 'rack/test' }
   gem :require, '=0.2.1'
