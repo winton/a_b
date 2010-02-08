@@ -12,13 +12,9 @@ module ABPlugin
       private
       
       def a_b_plugin_before_filter
-        id = session[:a_b_id]
-        unless id
-          id = session[:a_b_id] = ABPlugin.generate_token
-        end
-        ABPlugin.session_id = id
-        ABPlugin.session = session
-        @a_b_selections = ABPlugin.session[:a_b]
+        ABPlugin.generate_token
+        ABPlugin::Cookies.cookies = request.cookies
+        ABPlugin::Config.root = Rails.root
         ABPlugin.reload if ABPlugin.reload?
       end
     end

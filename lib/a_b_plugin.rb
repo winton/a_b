@@ -27,7 +27,7 @@ module ABPlugin
       20.times do
         token << letters_and_numbers[rand(letters_and_numbers.size-1)]
       end
-      token
+      @session_id = token
     end
     
     def reload
@@ -37,10 +37,10 @@ module ABPlugin
       data = Yaml.new(Config.data_yaml)
       
       @tests = data['tests']
-      @user_token = data['user_token']
-      @url = config['url']
+      Config.user_token = data['user_token']
+      Config.url = config['url']
       
-      unless @tests && @user_token && @url
+      unless @tests && Config.user_token && Config.url
         @@cached_at = Time.now - 9 * 60 # Try again in 1 minute
       end
     end
