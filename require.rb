@@ -28,9 +28,8 @@ Require do
   lib {
     gem :httparty
     require 'yaml'
-    require "lib/a_b_plugin/core_ext/array"
-    require "lib/a_b_plugin/core_ext/module"
     require "lib/a_b_plugin/api"
+    require "lib/a_b_plugin/config"
     require "lib/a_b_plugin/helper"
   }
   

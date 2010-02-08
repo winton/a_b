@@ -5,107 +5,48 @@ require File.dirname(__FILE__) + "/a_b_plugin/adapters/rails" if defined?(Rails)
 require File.dirname(__FILE__) + "/a_b_plugin/adapters/sinatra" if defined?(Sinatra)
 
 module ABPlugin
-  
-  mattr_accessor :cached_at
-  mattr_accessor :config
-  mattr_accessor :session
-  mattr_accessor :session_id
-  mattr_accessor :tests
-  mattr_accessor :url
-  mattr_accessor :user_token
-  
   class <<self
     
-    def active?
-      @@session && @@session_id && @@tests && @@url && @@user_token
-    end
+    attr_accessor :cached_at
+    attr_accessor :session_id
+    attr_accessor :tests
     
-    def convert(variant, conversions, selections, visits)
-      test = find_test(variant)
-      return unless test
-      conversions ||= {}
-      conversions[test['name']] = variant
-      [ conversions, selections, visits ]
-    end
-    
-    def find_test(test_or_variant)
-      return unless @@tests
-      tests = @@tests.select do |t|
-        t['name'] == test_or_variant || variant_names(t).include?(test_or_variant)
+    def boot(config=nil, data=nil)
+      yaml = Yaml.new(config || Config.config_yaml)
+      boot = yaml.boot
+      if boot
+        File.open(data || Config.data_yaml, 'w') do |f|
+          f.write(boot.to_yaml)
+        end
       end
-      tests.first
     end
     
     def generate_token
-      friendly = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-      newpass = ""
-      1.upto(20) { |i| newpass << friendly[rand(friendly.size-1)] }
-      newpass
+      letters_and_numbers = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+      token = ""
+      20.times do
+        token << letters_and_numbers[rand(letters_and_numbers.size-1)]
+      end
+      token
     end
     
     def reload
-      if @@config
-        data = File.dirname(@@config) + "/a_b_data.yml"
-      end
-      if @@config && File.exists?(@@config) && File.exists?(data)
-        config = YAML::load(File.open(@@config))
-        config = defined?(RACK_ENV) ? config[RACK_ENV] : config[RAILS_ENV]
-        data = YAML::load(File.open(data))
-        @@cached_at = Time.now
-        @@tests = data['tests']
-        @@user_token = data['user_token']
-        @@url = config['url']
-      else
+      @cached_at = Time.now
+      
+      config = Yaml.new(Config.config_yaml)
+      data = Yaml.new(Config.data_yaml)
+      
+      @tests = data['tests']
+      @user_token = data['user_token']
+      @url = config['url']
+      
+      unless @tests && @user_token && @url
         @@cached_at = Time.now - 9 * 60 # Try again in 1 minute
       end
     end
     
     def reload?
       @@cached_at.nil? || (Time.now - @@cached_at).to_i >= 10 * 60
-    end
-    
-    def select(test_or_variant, selections)
-      test = find_test(test_or_variant)
-      return [ selections ] unless test
-      
-      selections ||= {}
-      unless selections[test['name']]
-        variants = test['variants'].sort do |a, b|
-          a['visits'] <=> b['visits']
-        end
-        if variants.first
-          variants.first['visits'] += 1
-          selections[test['name']] = variants.first['name']
-        end
-      end
-      
-      [ selections,
-        test['name'],
-        selections[test['name']]
-      ]
-    end
-    
-    def test_names
-      @@tests.collect { |t| t['name'] }
-    end
-    
-    def variant_names(test=nil)
-      variants = lambda do |t|
-        t['variants'].collect { |v| v['name'] }
-      end
-      if test
-        variants.call(test)
-      else
-        @@tests.collect { |t| variants.call(t) }.flatten
-      end
-    end
-    
-    def visit(variant, conversions, selections, visits)
-      test = find_test(variant)
-      return unless test
-      visits ||= {}
-      visits[test['name']] = variant
-      [ conversions, selections, visits ]
     end
   end
 end
