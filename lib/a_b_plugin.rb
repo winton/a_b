@@ -1,5 +1,5 @@
 require 'rubygems'
-gem 'httparty', '=0.5.0'
+gem 'httparty', '=0.5.2'
 
 require 'httparty'
 require 'yaml'
