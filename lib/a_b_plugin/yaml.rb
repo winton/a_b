@@ -5,10 +5,12 @@ module ABPlugin
     attr_reader :yaml
     
     def initialize(path)
-      env = ENV['RACK_ENV'] || ENV['RAILS_ENV']
-      @path = path
-      @yaml = YAML::load(File.open(@path)) if @path
-      @yaml = yaml[env] if @yaml && @yaml[env]
+      if File.exists?(path)
+        env = ENV['RACK_ENV'] || ENV['RAILS_ENV']
+        @path = path
+        @yaml = YAML::load(File.open(@path)) if @path
+        @yaml = yaml[env] if @yaml && @yaml[env]
+      end
     end
     
     def boot

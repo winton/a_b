@@ -3,12 +3,7 @@ module ABPlugin
     module Sinatra
     
       def self.included(klass)
-        klass.send :before do
-          ABPlugin.generate_token
-          ABPlugin::Cookies.cookies = request.cookies
-          ABPlugin::Config.root = Rails.root
-          ABPlugin.reload if ABPlugin.reload?
-        end
+        ABPlugin::Config.root = Rails.root
       end
     end
   end

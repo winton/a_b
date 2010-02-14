@@ -3,5 +3,8 @@
 require File.expand_path(File.dirname(__FILE__) + "/../require")
 Require.bin!
 
-ABPlugin::Config.root = Dir.pwd
-ABPlugin.boot ARGV[0], ARGV[1]
+ABPlugin do
+  binary true
+  root Dir.pwd
+end
+ABPlugin.new
