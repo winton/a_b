@@ -6,7 +6,7 @@ Require do
   gem(:httparty, '=0.5.2') { require 'httparty' }
   gem(:json, '=1.2.0') { require 'json' }
   gem(:'rack-test', '=0.5.3') { require 'rack/test' }
-  gem :require, '=0.2.1'
+  gem :require, '=0.2.2'
   gem(:rake, '=0.8.7') { require 'rake' }
   gem :rspec, '=1.3.0'
   gem(:sinatra, '=0.9.4') { require 'sinatra/base' }
