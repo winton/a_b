@@ -14,16 +14,16 @@ class ABPlugin
       visit = Cookies.get(:visits, @test)
       variant = variant(name)
       
-      if conversion && variant
+      if conversion && variant && conversion == variant['id']
       # Already converted
-        block.call if conversion == variant['id']
+        block.call if block_given?
       
       elsif variant && variant['id'] == visit
       # Not yet converted
-        block.call
+        block.call if block_given?
         Cookies.set(:conversions, @test, variant)
       
-      elsif name.nil? && visit
+      elsif name.nil? && visit && block_given?
       # No variant specified and test has been visited
         block.call symbolize_name(visit['name'])
       end
@@ -37,9 +37,9 @@ class ABPlugin
       visit = Cookies.get(:visits, @test)
       variant = variant(name)
       
-      if visit && variant
+      if visit && variant && visit == variant
       # Already visited
-        block.call if visit == variant
+        block.call if block_given?
       
       elsif variant
       # Not yet visited  
@@ -48,12 +48,12 @@ class ABPlugin
         end
         visit = variants.first
         if visit && visit == variant
-          block.call
+          block.call if block_given?
           variant['visits'] += 1
           Cookies.set(:visits, @test, variant)
         end
         
-      elsif name.nil? && visit
+      elsif name.nil? && visit && block_given?
       # No variant specified and test has been visited
         block.call symbolize_name(visit['name'])
       end
