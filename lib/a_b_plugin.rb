@@ -4,7 +4,7 @@ Require.lib!
 require File.dirname(__FILE__) + "/a_b_plugin/adapters/rails" if defined?(Rails)
 require File.dirname(__FILE__) + "/a_b_plugin/adapters/sinatra" if defined?(Sinatra)
 
-module ABPlugin
+class ABPlugin
   
   def initialize(instance=nil)
     ABPlugin.instance = instance
@@ -19,6 +19,7 @@ module ABPlugin
   class <<self
     
     attr_accessor :cached_at
+    attr_accessor :instance
     attr_accessor :tests
     
     def load_yaml?
@@ -36,13 +37,21 @@ module ABPlugin
       config = Yaml.new(Config.api_yaml)
       data = Yaml.new(Config.cache_yaml)
       
+      ABPlugin do
+        token config['token']
+        url config['url']
+      end
+      
       @tests = data['tests']
-      Config.token = config['token']
-      Config.url = config['url']
       
       unless @tests && Config.token && Config.url
         @cached_at = Time.now - 9 * 60 # Try again in 1 minute
       end
+    end
+    
+    def reset
+      @cached_at = @instance = @tests = nil
+      Config.reset
     end
     
     def write_yaml
@@ -55,4 +64,8 @@ module ABPlugin
       end
     end
   end
+end
+
+def ABPlugin(&block)
+  ABPlugin::Config.class_eval &block
 end

@@ -1,4 +1,4 @@
-module ABPlugin
+class ABPlugin
   module Config
     class <<self
       
@@ -12,9 +12,18 @@ module ABPlugin
         @binary
       end
       
-      def cache_yaml
+      def cache_yaml(cache_yaml=nil)
         @cache_yaml = cache_yaml unless cache_yaml.nil?
         @cache_yaml || ("#{root}/config/a_b/cache.yml" if root)
+      end
+      
+      def env(env=nil)
+        @env = env unless env.nil?
+        @env || ENV['RACK_ENV'] || ENV['RAILS_ENV']
+      end
+      
+      def reset
+        @api_yaml = @binary = @cache_yaml = @root = @url = @token = nil
       end
       
       def root(root=nil)

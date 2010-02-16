@@ -1,9 +1,11 @@
-module ABPlugin
+class ABPlugin
   module Adapters
     module Rails
     
       def self.included(klass)
+        ABPlugin::Config.env = Rails.env
         ABPlugin::Config.root = Rails.root
+        klass.after_filter { ABPlugin.reset }
       end
     end
   end

@@ -1,22 +1,21 @@
-module ABPlugin
+class ABPlugin
   class Yaml
     
     attr_reader :path
     attr_reader :yaml
     
     def initialize(path)
-      if File.exists?(path)
-        env = ENV['RACK_ENV'] || ENV['RAILS_ENV']
+      if path && File.exists?(path)
         @path = path
-        @yaml = YAML::load(File.open(@path)) if @path
-        @yaml = yaml[env] if @yaml && @yaml[env]
+        @yaml = YAML::load(File.open(@path))
+        if @yaml && Config.env && @yaml[Config.env]
+          @yaml = @yaml[Config.env]
+        end
       end
     end
     
     def boot
-      if self['token'] && self['url']
-        API.boot self['token'], self['url']
-      end
+      API.boot self['token'], self['url']
     end
     
     def dirname

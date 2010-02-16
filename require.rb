@@ -25,13 +25,16 @@ Require do
   
   bin { require 'lib/a_b_plugin' }
   
-  lib {
+  lib do
     gem :httparty
     require 'yaml'
     require "lib/a_b_plugin/api"
     require "lib/a_b_plugin/config"
+    require "lib/a_b_plugin/cookies"
     require "lib/a_b_plugin/helper"
-  }
+    require "lib/a_b_plugin/test"
+    require "lib/a_b_plugin/yaml"
+  end
   
   rails_init { require 'lib/a_b_plugin' }
   
@@ -44,14 +47,15 @@ Require do
   spec_helper do
     require 'require/spec_helper'
     require 'pp'
-    require 'cgi'
-    
-    gem :json
-    gem :'rack-test'
-    gem :sinatra
-
-    require "spec/fixtures/rails/config/environment"
-    require "rails/init"
-    require "spec/fixtures/sinatra"
+    require 'rails/init'
+    # require 'cgi'
+    # 
+    # gem :json
+    # gem :'rack-test'
+    # gem :sinatra
+    # 
+    # require "spec/fixtures/rails/config/environment"
+    # require "rails/init"
+    # require "spec/fixtures/sinatra"
   end
 end

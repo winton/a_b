@@ -1,37 +1,34 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../require")
 Require.spec_helper!
 
+ENV['RACK_ENV'] = 'testing'
+
 Spec::Runner.configure do |config|
 end
 
-def params(url)
-  CGI.parse(URI.parse(url).query)
-end
-
 def stub_api_boot
-  @session_id = 's'*20
-  @token = 't'*20
-  @url = 'http://test.com'
-  @user_token = 'u'*20
   @tests = [{
+    "id" => 1,
     "name" => "Test",
     "variants" => [
       {
+        "id" => 2,
         "name" => "v1",
         "visits" => 0
       },
       {
+        "id" => 3,
         "name" => "v2",
         "visits" => 0
       },
       {
+        "id" => 4,
         "name" => "v3",
         "visits" => 0
       }
     ]
   }]
   ABPlugin::API.stub!(:boot).and_return(
-    "tests" => @tests,
-    "user_token" => @user_token
+    "tests" => @tests
   )
 end
