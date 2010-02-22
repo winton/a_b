@@ -34,15 +34,8 @@ class ABPlugin
     def load_yaml
       @cached_at = Time.now
       
-      config = Yaml.new(Config.api_yaml)
-      data = Yaml.new(Config.cache_yaml)
-      
-      ABPlugin do
-        token config['token']
-        url config['url']
-      end
-      
-      @tests = data['tests']
+      Yaml.new(Config.api_yaml).configure_api
+      @tests = Yaml.new(Config.cache_yaml)['tests']
       
       unless @tests && Config.token && Config.url
         @cached_at = Time.now - 9 * 60 # Try again in 1 minute
@@ -55,8 +48,8 @@ class ABPlugin
     end
     
     def write_yaml
-      yaml = Yaml.new(Config.api_yaml)
-      boot = yaml.boot
+      Yaml.new(Config.api_yaml).configure_api
+      boot = API.boot
       if boot
         File.open(Config.cache_yaml, 'w') do |f|
           f.write(boot.to_yaml)

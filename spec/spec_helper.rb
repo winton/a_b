@@ -6,7 +6,7 @@ ENV['RACK_ENV'] = 'testing'
 Spec::Runner.configure do |config|
 end
 
-def stub_api_boot
+def setup_variables
   @tests = [{
     "id" => 1,
     "name" => "Test",
@@ -28,6 +28,10 @@ def stub_api_boot
       }
     ]
   }]
+end
+
+def stub_api_boot
+  setup_variables
   ABPlugin::API.stub!(:boot).and_return(
     "tests" => @tests
   )

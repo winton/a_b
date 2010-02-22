@@ -25,120 +25,118 @@ describe ABPlugin do
     end
   end
   
-  describe "with root-only configuration" do
-    describe "when config files do not exist" do
-      
-      before(:each) do
-        ABPlugin do
-          root SPEC + '/does_not_exist'
-        end
-      end
+  describe "with configuration, but no configs exist" do
     
-      it "should only assign cached_at" do
-        ABPlugin.new
+    before(:each) do
+      ABPlugin do
+        root SPEC + '/does_not_exist'
+      end
+    end
+  
+    it "should only assign cached_at" do
+      ABPlugin.new
 
-        ABPlugin.cached_at.to_s.should == (Time.now - 9 * 60).to_s
-        ABPlugin.instance.should == nil
-        ABPlugin.tests.should == nil
+      ABPlugin.cached_at.to_s.should == (Time.now - 9 * 60).to_s
+      ABPlugin.instance.should == nil
+      ABPlugin.tests.should == nil
 
-        ABPlugin::Config.token.should == nil
-        ABPlugin::Config.url.should == nil
+      ABPlugin::Config.token.should == nil
+      ABPlugin::Config.url.should == nil
+    end
+  end
+  
+  describe "when api config config exists" do
+    
+    before(:each) do
+      ABPlugin do
+        root SPEC + '/fixtures/api_yaml'
+      end
+    end
+  
+    it "should only assign cached_at, token, url" do
+      ABPlugin.new
+      
+      ABPlugin.cached_at.to_s.should == (Time.now - 9 * 60).to_s
+      ABPlugin.instance.should == nil
+      ABPlugin.tests.should == nil
+      
+      ABPlugin::Config.token.should == 'token'
+      ABPlugin::Config.url.should == 'url'
+    end
+  end
+  
+  describe "when cache config exists" do
+    
+    before(:each) do
+      setup_variables
+      ABPlugin do
+        root SPEC + '/fixtures/cache_yaml'
       end
     end
     
-    describe "when api config file exists" do
+    it "should only assign cached_at and tests" do
+      ABPlugin.new
       
-      before(:each) do
-        ABPlugin do
-          root SPEC + '/fixtures/api_yaml'
-        end
-      end
+      ABPlugin.cached_at.to_s.should == (Time.now - 9 * 60).to_s
+      ABPlugin.instance.should == nil
+      ABPlugin.tests.should == @tests
+      
+      ABPlugin::Config.token.should == nil
+      ABPlugin::Config.url.should == nil
+    end
+  end
+  
+  describe "when api and cache configs exist" do
     
-      it "should only assign cached_at, token, url" do
-        ABPlugin.new
-        
-        ABPlugin.cached_at.to_s.should == (Time.now - 9 * 60).to_s
-        ABPlugin.instance.should == nil
-        ABPlugin.tests.should == nil
-        
-        ABPlugin::Config.token.should == 'token'
-        ABPlugin::Config.url.should == 'url'
+    before(:each) do
+      setup_variables
+      ABPlugin do
+        api_yaml SPEC + '/fixtures/api_yaml/config/a_b/api.yml'
+        cache_yaml SPEC + '/fixtures/cache_yaml/config/a_b/cache.yml'
       end
     end
     
-    describe "when cache file exists" do
+    it "should assign everything" do
+      ABPlugin.new
       
-      before(:each) do
-        stub_api_boot
-        ABPlugin do
-          root SPEC + '/fixtures/cache_yaml'
-        end
-      end
+      ABPlugin.cached_at.to_s.should == Time.now.to_s
+      ABPlugin.instance.should == nil
+      ABPlugin.tests.should == @tests
       
-      it "should only assign cached_at and tests" do
-        ABPlugin.new
-        
-        ABPlugin.cached_at.to_s.should == (Time.now - 9 * 60).to_s
-        ABPlugin.instance.should == nil
-        ABPlugin.tests.should == @tests
-        
-        ABPlugin::Config.token.should == nil
-        ABPlugin::Config.url.should == nil
-      end
+      ABPlugin::Config.token.should == 'token'
+      ABPlugin::Config.url.should == 'url'
     end
-    
-    describe "when api and cache configs exist" do
+  end
+  
+  describe "when in binary mode" do
+    describe "and api config present" do
       
       before(:each) do
-        stub_api_boot
+        setup_variables
         ABPlugin do
           api_yaml SPEC + '/fixtures/api_yaml/config/a_b/api.yml'
-          cache_yaml SPEC + '/fixtures/cache_yaml/config/a_b/cache.yml'
+          binary true
         end
       end
       
-      it "should assign everything" do
+      it "should call API.get" do
+        ABPlugin::API.should_receive(:get).with('/boot.json', :query => { :token => 'token' }).and_return(nil)
         ABPlugin.new
-        
-        ABPlugin.cached_at.to_s.should == Time.now.to_s
-        ABPlugin.instance.should == nil
-        ABPlugin.tests.should == @tests
-        
-        ABPlugin::Config.token.should == 'token'
-        ABPlugin::Config.url.should == 'url'
       end
     end
     
-    describe "when in binary mode" do
-      describe "and api config present" do
-        
-        before(:each) do
-          stub_api_boot
-          ABPlugin do
-            api_yaml SPEC + '/fixtures/api_yaml/config/a_b/api.yml'
-            binary true
-          end
-        end
-        
-        it "should call API.boot" do
-          ABPlugin::API.should_receive(:boot).with('token', 'url').and_return(nil)
-          ABPlugin.new
+    describe "and api config not present" do
+      
+      before(:each) do
+        setup_variables
+        ABPlugin do
+          binary true
         end
       end
       
-      describe "and api config not present" do
-        
-        before(:each) do
-          stub_api_boot
-          ABPlugin do
-            binary true
-          end
-        end
-        
-        it "should not call API.boot" do
-          ABPlugin::API.should_not_receive(:boot)
-          ABPlugin.new
-        end
+      it "should not call API.get" do
+        ABPlugin::API.should_not_receive(:get)
+        ABPlugin.new
       end
     end
   end

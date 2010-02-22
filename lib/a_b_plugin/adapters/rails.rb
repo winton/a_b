@@ -3,9 +3,10 @@ class ABPlugin
     module Rails
     
       def self.included(klass)
-        ABPlugin::Config.env = Rails.env
-        ABPlugin::Config.root = Rails.root
-        klass.after_filter { ABPlugin.reset }
+        ABPlugin do
+          env Rails.env
+          root Rails.root
+        end
       end
     end
   end

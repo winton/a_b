@@ -14,8 +14,11 @@ class ABPlugin
       end
     end
     
-    def boot
-      API.boot self['token'], self['url']
+    def configure_api
+      if @yaml
+        ABPlugin::Config.url @yaml['url']
+        ABPlugin::Config.token @yaml['token']
+      end
     end
     
     def dirname
