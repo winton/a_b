@@ -18,7 +18,7 @@ class ABPlugin
       # Already converted
         block.call if block_given?
       
-      elsif variant && variant['id'] == visit
+      elsif !visit || visit == variant
       # Not yet converted
         block.call if block_given?
         Cookies.set(:conversions, @test, variant)
@@ -40,22 +40,22 @@ class ABPlugin
       if visit && variant && visit == variant
       # Already visited
         block.call if block_given?
-      
-      elsif variant
-      # Not yet visited  
-        variants = test['variants'].sort do |a, b|
-          a['visits'] <=> b['visits']
-        end
-        visit = variants.first
-        if visit && visit == variant
-          block.call if block_given?
-          variant['visits'] += 1
-          Cookies.set(:visits, @test, variant)
-        end
         
       elsif name.nil? && visit && block_given?
       # No variant specified and test has been visited
         block.call symbolize_name(visit['name'])
+      
+      else
+      # Not yet visited  
+        variants = @test['variants'].sort do |a, b|
+          a['visits'] <=> b['visits']
+        end
+        visit = variants.first
+        if visit && (!variant || visit == variant)
+          block.call if block_given?
+          visit['visits'] += 1
+          Cookies.set(:visits, @test, visit)
+        end
       end
       
       symbolize_name(visit['name']) if visit
