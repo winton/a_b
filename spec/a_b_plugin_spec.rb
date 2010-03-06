@@ -51,7 +51,7 @@ describe ABPlugin do
     end
   end
   
-  describe "when api config config exists" do
+  describe "when api config exists" do
     
     before(:each) do
       ABPlugin do
