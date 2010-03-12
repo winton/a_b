@@ -26,7 +26,7 @@ module ABPlugin
       else
         path = nil
       end
-      "#{path}<script type='text/javascript'>A_B.setup(#{options.to_json});</script>"
+      "#{path}<script type='text/javascript'>if (window.A_B) A_B.setup(#{options.to_json});</script>"
     end
     
     def a_b_select(test_or_variant, type=nil, &block)
