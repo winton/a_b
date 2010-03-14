@@ -73,12 +73,6 @@ class ABPlugin
     
     private
     
-    if $testing
-      def rand(x)
-        0
-      end
-    end
-    
     def symbolize_name(name)
       name.downcase.gsub(/[^a-zA-Z0-9\s]/, '').gsub('_', '').intern
     end
