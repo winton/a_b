@@ -46,11 +46,15 @@ class ABPlugin
       
       already_recorded = (visit && visit == variant) || (!name && visit)
       
-      unless visit
-        variants = @test['variants'].sort do |a, b|
-          a['visits'] <=> b['visits']
+      if !visit && !@test['variants'].empty?
+        if @test['variants'][0]['visits']
+          variants = @test['variants'].sort do |a, b|
+            a['visits'] <=> b['visits']
+          end
+          visit = variants.first
+        else
+          visit = @test['variants'][rand(@test['variants'].size)]
         end
-        visit = variants.first
       end
       
       if visit && (!name || visit == variant)
@@ -68,6 +72,12 @@ class ABPlugin
     end
     
     private
+    
+    if $testing
+      def rand(x)
+        0
+      end
+    end
     
     def symbolize_name(name)
       name.downcase.gsub(/[^a-zA-Z0-9\s]/, '').gsub('_', '').intern

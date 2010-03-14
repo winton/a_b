@@ -1,6 +1,8 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../require")
 Require.spec_helper!
 
+$testing = true
+
 Spec::Runner.configure do |config|
   include ABPlugin::Helper
 end
