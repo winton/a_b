@@ -73,6 +73,11 @@ describe ABPlugin::Test do
       end
       ran.should == false
     end
+    
+    it "should accept a hash with extra boolean values" do
+      a_b(:test).visit(:v1, :logged_in => true)
+      JSON($cookies['a_b']).should == {"v"=>{"1"=>2},"e"=>{"1"=>{"logged_in"=>true}}}
+    end
   end
   
   describe 'convert' do
@@ -133,6 +138,11 @@ describe ABPlugin::Test do
         ran = true
       end
       ran.should == false
+    end
+    
+    it "should accept a hash with extra boolean values" do
+      a_b(:test).convert(:v1, :logged_in => true)
+      JSON($cookies['a_b']).should == {"v"=>{"1"=>2},"c"=>{"1"=>2},"e"=>{"1"=>{"logged_in"=>true}}}
     end
   end
 end
