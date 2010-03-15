@@ -75,8 +75,10 @@ describe ABPlugin::Test do
     end
     
     it "should accept a hash with extra boolean values" do
-      a_b(:test).visit(:v1, :logged_in => true)
-      JSON($cookies['a_b']).should == {"v"=>{"1"=>2},"e"=>{"1"=>{"logged_in"=>true}}}
+      a_b(:test).visit(:v1, :e => true)
+      JSON($cookies['a_b']).should == {"v"=>{"1"=>2},"e"=>{"1"=>{"e"=>true}}}
+      a_b(:test).visit(:e2 => true)
+      JSON($cookies['a_b']).should == {"v"=>{"1"=>2},"e"=>{"1"=>{"e"=>true,"e2"=>true}}}
     end
   end
   
@@ -141,8 +143,10 @@ describe ABPlugin::Test do
     end
     
     it "should accept a hash with extra boolean values" do
-      a_b(:test).convert(:v1, :logged_in => true)
-      JSON($cookies['a_b']).should == {"v"=>{"1"=>2},"c"=>{"1"=>2},"e"=>{"1"=>{"logged_in"=>true}}}
+      a_b(:test).convert(:v1, :e => true)
+      JSON($cookies['a_b']).should == {"v"=>{"1"=>2},"c"=>{"1"=>2},"e"=>{"1"=>{"e"=>true}}}
+      a_b(:test).convert(:e2 => true)
+      JSON($cookies['a_b']).should == {"v"=>{"1"=>2},"c"=>{"1"=>2},"e"=>{"1"=>{"e"=>true,"e2"=>true}}}
     end
   end
 end
