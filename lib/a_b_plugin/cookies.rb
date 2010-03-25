@@ -16,12 +16,14 @@ class ABPlugin
         type = type.to_s[0..0]
         
         cookie = Cookie.new
+        old = cookie.dup
         cookie[type][test['id'].to_s] = variant['id']
         if extra
           cookie['e'][variant['id'].to_s] ||= {}
           cookie['e'][variant['id'].to_s].merge!(extra)
         end
-        cookie.sync
+        cookie['s'] = 1
+        cookie.sync unless cookie == old
       end
     end
     
