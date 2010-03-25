@@ -16,14 +16,12 @@ class ABPlugin
         type = type.to_s[0..0]
         
         cookie = Cookie.new
-        old = cookie.dup
-        cookie[type][test['id'].to_s] = variant['id']
+        cookie[type][test['id'].to_s] = variant['id'].to_s
         if extra
           cookie['e'][variant['id'].to_s] ||= {}
           cookie['e'][variant['id'].to_s].merge!(extra)
         end
-        cookie['s'] = 1
-        cookie.sync unless cookie == old
+        cookie.sync unless cookie == Cookie.new
       end
     end
     
@@ -55,6 +53,8 @@ class ABPlugin
       
       def sync
         return unless ABPlugin.instance
+        
+        self['s'] = 1
         
         TYPES.each do |type|
           self.delete(type) if self[type].empty?
