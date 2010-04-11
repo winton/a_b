@@ -26,10 +26,10 @@ development: &base
   url: http://ab.mydomain.com
 production:
   site: My Site - Production
-  <<: *base
+  &lt;&lt;: *base
 staging:
   site: My Site - Staging
-  <<: *base
+  &lt;&lt;: *base
 </pre>
 
 ### Layout
@@ -70,10 +70,10 @@ a_b(:my_category, :my_test).visit(:my_other_variant)  # returns nil (:my_variant
 
 <pre>
 a_b(:my_category, :my_test).visit do |variant|
-  # variant equals :my_variant
+  # variant == :my_variant
 end
 a_b(:my_category, :my_test).convert do |variant|
-  # variant equals :my_variant
+  # variant == :my_variant
 end
 </pre>
 
@@ -109,10 +109,10 @@ a_b('my_category', 'my_test').convert('my_variant'); # returns 'my_variant'
 
 <pre>
 a_b('my_category', 'my_test').visit(function(variant) {
-  // variant equals 'my_variant'
+  // variant == 'my_variant'
 });
 a_b('my_category', 'my_test').convert(function(variant) {
-  // variant equals 'my_variant'
+  // variant == 'my_variant'
 });
 </pre>
 
