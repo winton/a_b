@@ -9,7 +9,7 @@ Install
 -------
 
 <pre>
-sudo gem install a_b_plugin --source http://gemcutter.org
+sudo gem install a_b_plugin
 </pre>
 
 Setup
@@ -21,14 +21,12 @@ Create <code>config/a_b.yml</code>:
 
 <pre>
 development: &base
-  site: My Site - Development
+  site: My Site
   token: token_goes_here
   url: http://ab.mydomain.com
-production:
-  site: My Site - Production
-  &lt;&lt;: *base
 staging:
-  site: My Site - Staging
+  &lt;&lt;: *base
+production:
   &lt;&lt;: *base
 </pre>
 
@@ -125,41 +123,56 @@ a_b('my_category', 'my_test').convert('my_variant', function() {
 });
 </pre>
 
-Environment
------------
+Conditions
+----------
 
-With <code>a_b</code>, you have the ability to track the percentage of visits or conversions that fit a certain profile, such as logged in users, or users that came from Google:
+With <code>a_b</code> it is possible to record, per variant, the percentage of visits or conversions that were recorded in a certain condition.
+
+For example, to tell <code>a_b</code> if a user is logged in, was referred by Google, or is using Firefox:
 
 ### Ruby
 
 <pre>
-a_b.env = { :logged_in => true }
-a_b.env[:from_google] = false
+a_b('Logged in' => true, 'From Google' => true)
+a_b('Firefox' => true)
+  # Conditions now contain three values
+
+a_b.reset
+  # Conditions now contain no values
 </pre>
 
 ### Javascript
 
 <pre>
-a_b.env = { logged_in: true };
-a_b.env['from_google'] = false;
+a_b({ 'Logged in': true, 'From Google': true });
+a_b({ 'Firefox': true });
+  // Conditions now contain three values
+
+a_b.reset();
+  // Conditions now contain no values
 </pre>
 
-The environment must be a hash with boolean values.
+* Conditions stick around for the entire session
+* Conditions must be a hash with values that evaluate as boolean
+* New conditions merge with existing conditions
+* If a condition is specified in one session and not in another, all others are assumed to be false
 
-The environment maintains state for the entire session.
-
-You may also set the environment on a temporary basis:
+You can also set conditions on a temporary (non-session) basis:
 
 ### Ruby
 
 <pre>
-a_b(:my_category, :my_test, :logged_in => true).visit
+a_b(:my_category, :my_test, 'My condition' => true).visit
+a_b(:my_category, :my_test).convert
+  # 'My condition' is assumed false for conversion
 </pre>
 
 ### Javascript
 
 <pre>
-a_b('my_category', 'my_test', { logged_in: true }).visit();
+a_b('my_category', 'my_test', { 'My condition': true }).visit();
+a_b('my_category', 'my_test').convert();
+  # 'My condition' is assumed false for conversion
 </pre>
 
 That's it!
