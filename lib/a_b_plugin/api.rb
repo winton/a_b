@@ -3,11 +3,13 @@ class ABPlugin
     
     include HTTParty
     
-    def self.categories
-      return unless Config.site && Config.token && Config.url
+    def self.site(options)
+      return unless Config.token && Config.url && (options[:name] || Config.site)
       base_uri Config.url
-      get('/categories.json', :query => {
-        :site => Config.site,
+      get('/site.json', :query => {
+        :include => options[:include],
+        :name => options[:name] || Config.site,
+        :only => options[:only],
         :token => Config.token
       })
     end
