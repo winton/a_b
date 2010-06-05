@@ -13,5 +13,14 @@ class ABPlugin
         :token => Config.token
       })
     end
+    
+    def self.create_user(attributes)
+      return unless Config.token && Config.url
+      base_uri Config.url
+      post('/users/create.json', :query => {
+        :token => Config.token,
+        :user => attributes
+      })
+    end
   end
 end
