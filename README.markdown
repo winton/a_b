@@ -9,35 +9,38 @@ Install
 -------
 
 <pre>
-sudo gem install a_b_plugin --source http://gemcutter.org
+sudo gem install a_b_plugin
 </pre>
 
 Setup
 -----
 
-### Assets
-
-Copy [this javascript file](http://github.com/winton/a_b/raw/master/public/js/a_b.js) into the directory where you keep your javascript assets.
-
 ### Configuration
 
-Execute the following code when you app boots.
+Create <code>config/a\_b.yml</code>:
 
 <pre>
-ABPlugin.token = 'kTJkI8e56OisQrexuChW' # Persistence token from one of your a_b users
-ABPlugin.url = 'http://ab.mydomain.com' # The URL to your a_b server
+token: your_a_b_token_goes_here
+development:
+  site: My Site - Development
+  url: http://127.0.0.1:3000
+staging:
+  site: My Site - Staging
+  url: http://staging.mysite.com
+production:
+  site: My Site - Production
+  url: http://mysite.com
 </pre>
-
-For Rails apps, you would place this at the bottom of your <code>environment.rb</code> file.
 
 ### Layout
 
-In your HTML layout, you will need a call to <code>a\_b\_script_tag</code> with the path to the javascript file you created earlier.
-
 <pre>
 &lt;html&gt;
+  &lt;head&gt;
+    &lt;script src="http://github.com/winton/a_b/raw/master/public/js/a_b.js" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/head&gt;
   &lt;body&gt;
-    &lt;%= a_b_script_tag '/javascripts/a_b.js' %&gt;
+    &lt;%= a_b %&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </pre>
