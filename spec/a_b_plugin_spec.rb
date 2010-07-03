@@ -19,8 +19,9 @@ describe ABPlugin do
       
       ABPlugin.cached_at.to_s.should == (Time.now - 9 * 60).to_s
       ABPlugin.instance.should == nil
-      ABPlugin.tests.should == nil
+      ABPlugin.categories.should == nil
       
+      ABPlugin::Config.site.should == nil
       ABPlugin::Config.token.should == nil
       ABPlugin::Config.url.should == nil
     end
@@ -44,8 +45,9 @@ describe ABPlugin do
 
       ABPlugin.cached_at.to_s.should == (Time.now - 9 * 60).to_s
       ABPlugin.instance.should == nil
-      ABPlugin.tests.should == nil
-
+      ABPlugin.categories.should == nil
+      
+      ABPlugin::Config.site.should == nil
       ABPlugin::Config.token.should == nil
       ABPlugin::Config.url.should == nil
     end
@@ -64,8 +66,9 @@ describe ABPlugin do
       
       ABPlugin.cached_at.to_s.should == (Time.now - 9 * 60).to_s
       ABPlugin.instance.should == nil
-      ABPlugin.tests.should == nil
+      ABPlugin.categories.should == nil
       
+      ABPlugin::Config.site.should == 'site'
       ABPlugin::Config.token.should == 'token'
       ABPlugin::Config.url.should == 'url'
     end
@@ -85,8 +88,9 @@ describe ABPlugin do
       
       ABPlugin.cached_at.to_s.should == Time.now.to_s
       ABPlugin.instance.should == nil
-      ABPlugin.tests.should == @tests
+      ABPlugin.categories.should == @site['categories']
       
+      ABPlugin::Config.site.should == nil
       ABPlugin::Config.token.should == nil
       ABPlugin::Config.url.should == nil
     end
@@ -106,8 +110,9 @@ describe ABPlugin do
       
       ABPlugin.cached_at.to_s.should == Time.now.to_s
       ABPlugin.instance.should == nil
-      ABPlugin.tests.should == @tests
+      ABPlugin.categories.should == @site['categories']
       
+      ABPlugin::Config.site.should == 'site'
       ABPlugin::Config.token.should == 'token'
       ABPlugin::Config.url.should == 'url'
     end
@@ -125,17 +130,24 @@ describe ABPlugin do
       end
       
       it "should call API.get" do
-        ABPlugin::API.should_receive(:get).with('/boot.json', :query => { :token => 'token' }).and_return(nil)
+        ABPlugin::API.should_receive(:get).with('/sites.json',
+          :query => {
+            :only => [ :id, :category_id, :name, :tests, :variants ],
+            :site => { :name => "site" },
+            :include => { :categories => { :tests => :variants }
+          },
+          :token=>"token"
+        }).and_return(nil)
         ABPlugin.new
       end
       
       it "should write test data to the config" do
         data = File.read(ABPlugin::Config.yaml)
         begin
-          ABPlugin::API.stub!(:boot).and_return({ 'tests' => @tests })
+          stub_api_boot
           ABPlugin.new
           yaml = ABPlugin::Yaml.new(ABPlugin::Config.yaml)
-          yaml['tests'].should == @tests
+          yaml['categories'].should == @site['categories']
         ensure
           File.open(ABPlugin::Config.yaml, 'w') do |f|
             f.write(data)

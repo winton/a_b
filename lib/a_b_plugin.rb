@@ -31,8 +31,8 @@ class ABPlugin
   class <<self
     
     attr_accessor :cached_at
+    attr_accessor :categories
     attr_accessor :instance
-    attr_accessor :tests
     
     def load_yaml?
       if @cached_at
@@ -48,26 +48,33 @@ class ABPlugin
       
       yaml = Yaml.new(Config.yaml)
       yaml.configure_api
-      @tests = yaml['tests']
       
-      unless @tests
+      @categories = yaml['categories']
+      
+      unless @categories
         @cached_at = Time.now - 9 * 60 # Try again in 1 minute
       end
     end
     
     def reset
-      $cookies = @cached_at = @instance = @tests = nil
+      $cookies = @cached_at = @categories = @instance = nil
       Config.reset
     end
     
     def write_yaml
       yaml = Yaml.new(Config.yaml)
       yaml.configure_api
-      boot = API.boot
-      if boot
-        yaml.data['tests'] = boot['tests']
-        File.open(Config.yaml, 'w') do |f|
-          f.write(yaml.data.to_yaml)
+      if Config.site
+        site = API.sites(
+          :include => { :categories => { :tests => :variants } },
+          :only => [ :id, :category_id, :name, :tests, :variants ],
+          :name => Config.site
+        )
+        if site
+          yaml.data['categories'] = site['categories']
+          File.open(Config.yaml, 'w') do |f|
+            f.write(yaml.data.to_yaml)
+          end
         end
       end
     end

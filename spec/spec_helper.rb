@@ -13,6 +13,8 @@ require 'pp'
 
 require "#{Bundler.root}/rails/init"
 
+$testing = true
+
 Spec::Runner.configure do |config|
   include ABPlugin::Helper
 end
@@ -25,32 +27,32 @@ def debug(object)
 end
 
 def setup_variables
-  @tests = [{
-    "id" => 1,
-    "name" => "Test",
-    "variants" => [
-      {
-        "id" => 2,
-        "name" => "v1",
-        "visits" => 0
-      },
-      {
-        "id" => 3,
-        "name" => "v2",
-        "visits" => 0
-      },
-      {
-        "id" => 4,
-        "name" => "v3",
-        "visits" => 0
-      }
-    ]
-  }]
+  @site = {
+    "categories" => [{
+      "name" => "Category",
+      "tests" => [{
+        "id" => 1,
+        "name" => "Test",
+        "variants" => [
+          {
+            "id" => 2,
+            "name" => "v1"
+          },
+          {
+            "id" => 3,
+            "name" => "v2"
+          },
+          {
+            "id" => 4,
+            "name" => "v3"
+          }
+        ]
+      }]
+    }]
+  }
 end
 
 def stub_api_boot
   setup_variables
-  ABPlugin::API.stub!(:boot).and_return(
-    "tests" => @tests
-  )
+  ABPlugin::API.stub!(:sites).and_return(@site)
 end

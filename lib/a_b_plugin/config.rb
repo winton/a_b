@@ -13,12 +13,17 @@ class ABPlugin
       end
       
       def reset
-        @binary = @env = @root = @url = @token = @yaml = nil
+        @binary = @env = @root = @site = @url = @token = @yaml = nil
       end
       
       def root(root=nil)
         @root = root unless root.nil?
         @root
+      end
+      
+      def site(site=nil)
+        @site = site unless site.nil?
+        @site
       end
       
       def url(url=nil)

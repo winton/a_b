@@ -14,34 +14,34 @@ class ABPlugin
     end
     
     def get(key)
-      @data[key] || []
+      @data[key] || (key == :e ? {} : [])
     end
     
-    def set(key, value)
+    def set(key, value, extras=nil)
       return unless value
       @data[key] ||= []
       # Store current version for later comparison
       old = @data[key].dup
-      # If hash, grab keys that have true values
+      # Hash
       if value.respond_to?(:keys)
-        value = value.to_a
-        value = value.collect { |(k, v)| k if v }
-        value.compact!
-      end
+        @data[key] = value
       # Array
-      if value.respond_to?(:flatten)
+      elsif value.respond_to?(:flatten)
         @data[key] += value
       # Other value
       else
         @data[key] << value
       end
       @data[key].uniq!
-      # Add difference to @send
-      diff = @data[key] - old
-      unless diff.empty?
-        @send[key] ||= []
-        @send[key] += diff
-        @send[key].uniq!
+      unless key == :e
+        # Add difference to @send
+        diff = @data[key] - old
+        unless diff.empty?
+          @send[key] ||= []
+          @send[key] += diff
+          @send[key].uniq!
+          @send[:e] = extras unless extras.empty?
+        end
       end
       # Export data to cookies
       to_cookies
