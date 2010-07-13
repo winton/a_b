@@ -13,6 +13,7 @@ v = {
 
 group :gemspec do
   gem 'bundler', v[:bundler]
+  gem 'httparty', v[:httparty]
 end
 
 group :gemspec_dev do
@@ -20,7 +21,7 @@ group :gemspec_dev do
 end
 
 group :lib do
-  gem 'httparty', v[:httparty], :require => %w(httparty)
+  gem 'httparty', v[:httparty]
 end
 
 group :rake do
