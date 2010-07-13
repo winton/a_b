@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 v = {
-  :bundler => '=1.0.0.beta.2',
+  :bundler => '=1.0.0.beta.5',
   :httparty => '=0.5.2',
   :json => '=1.2.0',
   :rack_test => '=0.5.3',
