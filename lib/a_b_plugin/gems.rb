@@ -2,7 +2,7 @@ unless defined?(ABPlugin::Gems)
   
   require 'rubygems'
   
-  module ABPlugin
+  class ABPlugin
     class Gems
     
       VERSIONS = {

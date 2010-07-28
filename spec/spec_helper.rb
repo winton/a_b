@@ -3,7 +3,7 @@ $testing = true
 
 require "#{$root}/lib/a_b_plugin/gems"
 
-GemTemplate::Gems.require(:spec)
+ABPlugin::Gems.require(:spec)
 
 require 'json'
 require 'rack/test'
