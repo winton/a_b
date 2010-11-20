@@ -1,8 +1,8 @@
-unless defined?(ABPlugin::Gems)
+unless defined?(AB::Gems)
   
   require 'rubygems'
   
-  class ABPlugin
+  class AB
     class Gems
     
       VERSIONS = {

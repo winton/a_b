@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe ABPlugin::Cookies do
+describe AB::Cookies do
   
   include Rack::Test::Methods
   

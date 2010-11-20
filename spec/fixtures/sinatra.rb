@@ -11,19 +11,19 @@ class SinatraApp < Sinatra::Base
   end
   
   get "/destroy_cookie" do
-    ABPlugin.instance = self
-    ABPlugin::Cookies.set('a_b', nil)
+    AB.instance = self
+    AB::Cookies.set('a_b', nil)
     nil
   end
   
   get "/get_cookie" do
-    ABPlugin.instance = self
-    ABPlugin::Cookies.get('a_b')
+    AB.instance = self
+    AB::Cookies.get('a_b')
   end
   
   get "/set_cookie" do
-    ABPlugin.instance = self
-    ABPlugin::Cookies.set('a_b', 'test')
+    AB.instance = self
+    AB::Cookies.set('a_b', 'test')
     nil
   end
 end

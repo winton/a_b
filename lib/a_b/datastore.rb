@@ -1,4 +1,4 @@
-class ABPlugin
+class AB
   class Datastore
     
     def initialize(data, send)

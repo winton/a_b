@@ -1,15 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe ABPlugin::Test do
+describe AB::Test do
   
   before(:each) do
-    ABPlugin do
+    AB do
       root "#{$root}/spec/fixtures/tests_yaml"
     end
   end
   
   after(:each) do
-    ABPlugin.reset
+    AB.reset
   end
   
   describe 'visit' do
@@ -25,13 +25,13 @@ describe ABPlugin::Test do
     
     it "should set @send" do
       a_b(:category, :test).visit
-      @a_b_plugin.send.should == {:v=>[2]}
+      @a_b.send.should == {:v=>[2]}
     end
     
     it "should maintain state if called more than once" do
       a_b(:category, :test).visit
       a_b(:category, :test).visit
-      @a_b_plugin.send.should == {:v=>[2]}
+      @a_b.send.should == {:v=>[2]}
     end
     
     it "should return the variant name if variant specified and selected" do
@@ -70,7 +70,7 @@ describe ABPlugin::Test do
     
     it "should accept a hash with extra boolean values" do
       a_b(:category, :test, :e => true).visit(:v1)
-      @a_b_plugin.send.should == {:v=>[2],:e=>{:e => true}}
+      @a_b.send.should == {:v=>[2],:e=>{:e => true}}
     end
   end
   
@@ -91,13 +91,13 @@ describe ABPlugin::Test do
     
     it "should set @send" do
       a_b(:category, :test).convert
-      @a_b_plugin.send.should == {:v=>[2], :c=>[2]}
+      @a_b.send.should == {:v=>[2], :c=>[2]}
     end
     
     it "should maintain state if called more than once" do
       a_b(:category, :test).convert
       a_b(:category, :test).convert
-      @a_b_plugin.send.should == {:v=>[2], :c=>[2]}
+      @a_b.send.should == {:v=>[2], :c=>[2]}
     end
     
     it "should return the variant name if variant specified and selected" do
@@ -136,7 +136,7 @@ describe ABPlugin::Test do
     
     it "should accept a hash with extra boolean values" do
       a_b(:category, :test, :e => true).convert(:v1)
-      @a_b_plugin.send.should == {:v=>[2],:c=>[2],:e=>{:e => true}}
+      @a_b.send.should == {:v=>[2],:c=>[2],:e=>{:e => true}}
     end
   end
 end

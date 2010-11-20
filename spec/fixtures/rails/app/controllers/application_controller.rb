@@ -17,19 +17,19 @@ class ApplicationController < ActionController::Base
   end
   
   def destroy_cookie
-    ABPlugin.instance = self
-    ABPlugin::Cookies.set('a_b', nil)
+    AB.instance = self
+    AB::Cookies.set('a_b', nil)
     render :nothing => true
   end
   
   def get_cookie
-    ABPlugin.instance = self
-    render :text => ABPlugin::Cookies.get('a_b')
+    AB.instance = self
+    render :text => AB::Cookies.get('a_b')
   end
   
   def set_cookie
-    ABPlugin.instance = self
-    ABPlugin::Cookies.set('a_b', 'test')
+    AB.instance = self
+    AB::Cookies.set('a_b', 'test')
     render :nothing => true
   end
 end

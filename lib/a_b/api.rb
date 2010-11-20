@@ -1,4 +1,4 @@
-class ABPlugin
+class AB
   class API
     
     include HTTParty

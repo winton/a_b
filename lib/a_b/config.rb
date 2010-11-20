@@ -1,4 +1,4 @@
-class ABPlugin
+class AB
   module Config
     class <<self
       

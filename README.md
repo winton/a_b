@@ -1,15 +1,15 @@
-a\_b\_plugin
-============
+a\_b
+====
 
-Talk to <code>a\_b</code> from your Rails or Sinatra app.
+Talk to <code>a\_b\_server</code> from your Rails or Sinatra app.
 
-[What the hell is <code>a_b</code>?](http://github.com/winton/a_b)
+[What the hell is <code>a_b_server</code>?](http://github.com/winton/a_b_server)
 
 Install
 -------
 
 <pre>
-sudo gem install a_b_plugin
+sudo gem install a_b
 </pre>
 
 Setup

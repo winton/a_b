@@ -1,4 +1,4 @@
-class ABPlugin
+class AB
   class Test
     
     def initialize(data, send, c, t=nil, e=nil, &block)
@@ -81,8 +81,8 @@ class ABPlugin
     private
     
     def category(name)
-      if ABPlugin::Config.categories
-        ABPlugin::Config.categories.detect do |c|
+      if AB::Config.categories
+        AB::Config.categories.detect do |c|
           c['name'] == name ||
           symbolize_name(c['name']) == name
         end

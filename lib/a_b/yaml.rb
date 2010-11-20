@@ -1,4 +1,4 @@
-class ABPlugin
+class AB
   class Yaml
     
     attr_reader :data
@@ -13,10 +13,10 @@ class ABPlugin
     
     def configure_api
       if @data
-        ABPlugin::Config.categories @data['categories']
-        ABPlugin::Config.site @data['site']
-        ABPlugin::Config.token @data['token']
-        ABPlugin::Config.url @data['url']
+        AB::Config.categories @data['categories']
+        AB::Config.site @data['site']
+        AB::Config.token @data['token']
+        AB::Config.url @data['url']
       end
     end
     

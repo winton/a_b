@@ -1,10 +1,10 @@
-require File.dirname(__FILE__) + '/a_b_plugin/gems'
+require File.dirname(__FILE__) + '/a_b/gems'
 
-ABPlugin::Gems.require(:lib)
+AB::Gems.require(:lib)
 
 require 'httparty'
 
-$:.unshift File.dirname(__FILE__) + '/a_b_plugin'
+$:.unshift File.dirname(__FILE__) + '/a_b'
 
 require 'version'
 
@@ -14,15 +14,15 @@ require 'cookies'
 require 'datastore'
 require 'helper'
 require 'test'
-require File.dirname(__FILE__) + '/a_b_plugin/yaml'
+require File.dirname(__FILE__) + '/a_b/yaml'
 
-class ABPlugin
+class AB
   
   attr_reader :data
   attr_reader :send
   
   def initialize(instance=nil)
-    ABPlugin.instance = instance
+    AB.instance = instance
     
     @data = Cookies.get('a_b')
     @send = Cookies.get('a_b_s')
@@ -34,9 +34,9 @@ class ABPlugin
     @send = symbolize_keys(@send)
     
     if Config.binary
-      ABPlugin.write_yaml
-    elsif ABPlugin.load_yaml?
-      ABPlugin.load_yaml
+      AB.write_yaml
+    elsif AB.load_yaml?
+      AB.load_yaml
     end
   end
   
@@ -129,8 +129,8 @@ class ABPlugin
   end
 end
 
-def ABPlugin(&block)
-  ABPlugin::Config.class_eval &block
+def AB(&block)
+  AB::Config.class_eval &block
 end
 
 require 'adapters/rails' if defined?(Rails)

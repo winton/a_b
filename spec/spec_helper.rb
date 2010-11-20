@@ -1,9 +1,9 @@
 $root = File.expand_path('../../', __FILE__)
 $testing = true
 
-require "#{$root}/lib/a_b_plugin/gems"
+require "#{$root}/lib/a_b/gems"
 
-ABPlugin::Gems.require(:spec)
+AB::Gems.require(:spec)
 
 require 'json'
 require 'rack/test'
@@ -12,12 +12,12 @@ require 'pp'
 require "#{$root}/spec/fixtures/rails/config/environment"
 require "#{$root}/spec/fixtures/sinatra"
 
-require "#{$root}/lib/a_b_plugin"
+require "#{$root}/lib/a_b"
 
 require "#{$root}/rails/init"
 
 Spec::Runner.configure do |config|
-  include ABPlugin::Helper
+  include AB::Helper
 end
 
 # For use with rspec textmate bundle
@@ -55,5 +55,5 @@ end
 
 def stub_api_boot
   setup_variables
-  ABPlugin::API.stub!(:sites).and_return(@site)
+  AB::API.stub!(:sites).and_return(@site)
 end

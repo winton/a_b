@@ -1,9 +1,9 @@
-class ABPlugin
+class AB
   module Adapters
     module Sinatra
       
       def self.included(klass)
-        ABPlugin do
+        AB do
           env klass.environment
           root klass.root
         end
@@ -12,4 +12,4 @@ class ABPlugin
   end
 end
 
-Sinatra::Base.send(:include, ABPlugin::Helper)
+Sinatra::Base.send(:include, AB::Helper)
