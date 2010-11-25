@@ -11,7 +11,7 @@ unless defined?(AB::Gems)
         :'rack-test' => '=0.5.3',
         :rake => '=0.8.7',
         :rails => '=2.3.5',
-        :rspec => '=1.3.0',
+        :rspec => '=1.3.1',
         :sinatra => '=1.0'
       }
     
